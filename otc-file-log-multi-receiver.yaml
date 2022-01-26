@@ -5,7 +5,8 @@ extensions:
     access_id:  ${ACCESS_ID}
     access_key: ${ACCESS_KEY}
     api_base_url: https://stag-open-events.sumologic.net
-    collector_name: Arpita_Otc_multireceiver
+    collector_name: ${API_BASE_URL}
+    clobber: true
   file_storage/buff:
     directory: /tmp
     timeout: 5s

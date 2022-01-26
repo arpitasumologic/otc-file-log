@@ -1,11 +1,13 @@
 #https://github.com/SumoLogic/sumologic-otel-collector#receivers
 #https://github.com/open-telemetry/opentelemetry-log-collection/blob/main/docs/operators/regex_parser.md
+
 extensions:
   sumologic/otc-extension:
     access_id:  ${ACCESS_ID}
     access_key: ${ACCESS_KEY}
-    api_base_url: https://stag-open-events.sumologic.net
+    api_base_url: ${API_BASE_URL}
     collector_name: Arpita_Otc_regex_op
+    clobber: true
   file_storage/buff:
     directory: /tmp
     timeout: 5s
