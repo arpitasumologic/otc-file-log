@@ -1,0 +1,43 @@
+#https://github.com/SumoLogic/sumologic-otel-collector#receivers
+#https://github.com/open-telemetry/opentelemetry-log-collection/blob/main/docs/operators/json_parser.md
+
+extensions:
+  sumologic/otc-extension:
+    access_id:  ${ACCESS_ID}
+    access_key: ${ACCESS_KEY}
+    api_base_url: https://stag-open-events.sumologic.net
+    collector_name: Arpita_Otc_json_op
+  file_storage/buff:
+    directory: /tmp
+    timeout: 5s
+exporters:
+  logging:
+    loglevel: info
+  sumologic:
+    auth:
+      authenticator: sumologic/otc-extension
+    sending_queue:
+      enabled: true
+      queue_size: 100
+      persistent_storage_enabled: true
+receivers:
+  filelog:
+    include:
+    - /opt/sumoTest/logs/*.*
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: time
+          layout: '%Y-%m-%d %H:%M:%S'
+    max_log_size: 20MiB
+    start_at: end
+service:
+  extensions: [sumologic/otc-extension, file_storage/buff]
+  pipelines:
+    logs:
+      exporters: [sumologic]
+      processors: []
+      receivers: [filelog]
+  telemetry:
+    logs:
+      level: debug

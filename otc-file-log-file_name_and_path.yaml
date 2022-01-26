@@ -1,0 +1,39 @@
+#https://github.com/SumoLogic/sumologic-otel-collector#receivers
+
+extensions:
+  sumologic/otc-extension:
+    access_id:  ${ACCESS_ID}
+    access_key: ${ACCESS_KEY}
+    api_base_url: https://stag-open-events.sumologic.net
+    collector_name: Arpita_Otc_log_name_path
+  file_storage/buff:
+    directory: /tmp
+    timeout: 5s
+exporters:
+  logging:
+    loglevel: info
+  sumologic:
+    auth:
+      authenticator: sumologic/otc-extension
+    sending_queue:
+      enabled: true
+      queue_size: 100
+      persistent_storage_enabled: true
+receivers:
+  filelog:
+    include:
+    - /opt/sumoTest/logs/*.*
+    include_file_name: false
+    include_file_path: true
+    max_log_size: 20MiB
+    start_at: end
+service:
+  extensions: [sumologic/otc-extension, file_storage/buff]
+  pipelines:
+    logs:
+      exporters: [sumologic]
+      processors: []
+      receivers: [filelog]
+  telemetry:
+    logs:
+      level: debug

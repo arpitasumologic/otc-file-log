@@ -1,0 +1,36 @@
+#https://github.com/SumoLogic/sumologic-otel-collector#receivers
+#The default dile storage directory is %ProgramData%\Otelcol\FileStorage on Windows and /var/lib/otelcol/file_storage otherwise.
+#The default timeout is 1s.
+extensions:
+  sumologic/otc-extension:
+    access_id:  ${ACCESS_ID}
+    access_key: ${ACCESS_KEY}
+    api_base_url: https://stag-open-events.sumologic.net
+    collector_name: Arpita_Otc_implict
+  file_storage:
+exporters:
+  logging:
+    loglevel: info
+  sumologic:
+    auth:
+      authenticator: sumologic/otc-extension
+    sending_queue:
+      enabled: true
+      queue_size: 100
+      persistent_storage_enabled: true
+receivers:
+  filelog:
+    include:
+    - /opt/sumoTest/logs/*.*
+    max_log_size: 20MiB
+    start_at: end
+service:
+  extensions: [sumologic/otc-extension, file_storage]
+  pipelines:
+    logs:
+      exporters: [sumologic]
+      processors: []
+      receivers: [filelog]
+  telemetry:
+    logs:
+      level: debug
