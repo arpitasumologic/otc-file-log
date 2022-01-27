@@ -22,13 +22,15 @@ exporters:
       persistent_storage_enabled: true
 receivers:
   filelog/1:
-    include:
-    - /opt/sumoTest/logs/sub1/*.log
-    max_log_size: 20MiB
-    start_at: end
-  filelog/2:
     exclude:
-    - /opt/sumoTest/logs/sub2/*.json
+    - /opt/sumoTest/logs/sub1/*.txt
+    include:
+    - /opt/sumoTest/logs/*/*.txt
+    max_log_size: 20MiB
+    start_at: beginning
+  filelog/2:
+    include:
+    - /opt/sumoTest/jsonlogs/*.json
     max_log_size: 20MiB
     start_at: end
 

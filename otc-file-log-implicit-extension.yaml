@@ -25,7 +25,7 @@ receivers:
     include:
     - /opt/sumoTest/logs/*.*
     max_log_size: 20MiB
-    start_at: end
+    start_at: beginning
 service:
   extensions: [sumologic/otc-extension, file_storage]
   pipelines:

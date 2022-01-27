@@ -26,9 +26,9 @@ receivers:
     include:
     - /opt/sumoTest/logs/*.*
     multiline:
-      line_start_pattern:
+      line_start_pattern: 'START '
     max_log_size: 20MiB
-    start_at: end
+    start_at: beginning
 service:
   extensions: [sumologic/otc-extension, file_storage/buff]
   pipelines:

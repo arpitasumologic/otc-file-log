@@ -24,14 +24,16 @@ exporters:
 receivers:
   filelog:
     include:
-    - /opt/sumoTest/logs/*.*
+    - /opt/sumoTest/logs/*
     operators:
       - type: json_parser
+        parse_from: message
         timestamp:
           parse_from: time
-          layout: '%Y-%m-%d %H:%M:%S'
+          layout_type: epoch
+          layout: s
     max_log_size: 20MiB
-    start_at: end
+    start_at: beginning
 service:
   extensions: [sumologic/otc-extension, file_storage/buff]
   pipelines:
